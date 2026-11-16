@@ -9,6 +9,7 @@
   const filters = [...document.querySelectorAll('[data-filter]')];
   const projects = [...document.querySelectorAll('.project-card')];
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const supportsOrganicClipPath = CSS.supports('clip-path', 'path(evenodd, "M0 0H1V1H0Z")');
   let activeCategory = 'all';
   let themeAnimating = false;
 
@@ -100,8 +101,16 @@
     const edge = document.createElementNS(svgNS, 'path');
     edge.classList.add('theme-wipe-edge');
     wipe.append(defs, edgeGlow, edge);
-    oldLayer.style.mask = `url(#${maskId})`;
-    oldLayer.style.webkitMask = `url(#${maskId})`;
+    if (supportsOrganicClipPath) {
+      // Clip the old-theme snapshot itself so the live theme is exposed as the
+      // organic edge advances. Some engines animate the edge SVG but fail to
+      // repaint a changing SVG mask on a regular DOM layer.
+      oldLayer.style.mask = 'none';
+      oldLayer.style.webkitMask = 'none';
+    } else {
+      oldLayer.style.mask = `url(#${maskId})`;
+      oldLayer.style.webkitMask = `url(#${maskId})`;
+    }
     document.body.append(oldLayer, wipe);
     applyTheme(nextTheme);
     // Theme and color-scheme changes can trigger scroll anchoring in some browsers.
@@ -166,6 +175,12 @@
       reveal.setAttribute('d', d);
       edgeGlow.setAttribute('d', d);
       edge.setAttribute('d', d);
+      if (supportsOrganicClipPath) {
+        const outerPath = `M 0 0 H ${width} V ${height} H 0 Z`;
+        const clipPath = `path(evenodd, "${outerPath} ${d}")`;
+        oldLayer.style.clipPath = clipPath;
+        oldLayer.style.webkitClipPath = clipPath;
+      }
       if (t < 1) requestAnimationFrame(crawl);
       else {
         oldLayer.remove();
