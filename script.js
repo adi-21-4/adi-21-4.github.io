@@ -11,6 +11,8 @@
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const iosWebKit = /iPhone|iPad|iPod/i.test(navigator.userAgent)
     || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const iosClipPathSupported = iosWebKit
+    && CSS.supports('clip-path', 'path(evenodd, "M0 0H1V1H0Z")');
   let activeCategory = 'all';
   let themeAnimating = false;
 
@@ -157,7 +159,7 @@
         const ripple = reducedMotion
           ? .008 * Math.sin(angle * 5 + t * 3)
           : .045 * Math.sin(angle * 7 + t * 5.2) + .027 * Math.sin(angle * 13 - t * 4.4 + .8) + .012 * Math.sin(angle * 23 + t * 2.3);
-        const radius = iosWebKit
+        const radius = iosWebKit && !iosClipPathSupported
           ? Math.max(0, reach * (1 + .018 * Math.sin(angle * 5 + t * 4)))
           : Math.max(0, reach * (1 + ripple + tendril));
         points.push([originX + Math.cos(angle) * radius, originY + Math.sin(angle) * radius]);
@@ -167,11 +169,18 @@
       edgeGlow.setAttribute('d', d);
       edge.setAttribute('d', d);
       if (iosWebKit) {
-        const feather = 10;
-        const opaqueEdge = Math.max(0, reach - feather);
-        const maskImage = `radial-gradient(circle at ${originX}px ${originY}px, transparent 0, transparent ${opaqueEdge}px, #000 ${reach}px)`;
-        oldLayer.style.webkitMaskImage = maskImage;
-        oldLayer.style.maskImage = maskImage;
+        if (iosClipPathSupported) {
+          const outerPath = `M 0 0 H ${width} V ${height} H 0 Z`;
+          const clipPath = `path(evenodd, "${outerPath} ${d}")`;
+          oldLayer.style.webkitClipPath = clipPath;
+          oldLayer.style.clipPath = clipPath;
+        } else {
+          const feather = 10;
+          const opaqueEdge = Math.max(0, reach - feather);
+          const maskImage = `radial-gradient(circle at ${originX}px ${originY}px, transparent 0, transparent ${opaqueEdge}px, #000 ${reach}px)`;
+          oldLayer.style.webkitMaskImage = maskImage;
+          oldLayer.style.maskImage = maskImage;
+        }
       }
       if (t < 1) requestAnimationFrame(crawl);
       else {
