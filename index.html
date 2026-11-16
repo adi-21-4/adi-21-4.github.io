@@ -12,7 +12,7 @@
 <title>Aditya Joshi — Computer Engineer</title>
 <link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23090b12'/%3E%3Cpath d='M12 46 25 17h10L22 46zm18 0 13-29h10L40 46z' fill='%23c8ff36'/%3E%3C/svg%3E" rel="icon"/>
 <link rel="preload" href="assets/fonts/space-grotesk-400.ttf" as="font" type="font/ttf" crossorigin/>
-<link href="style.css?v=32" rel="stylesheet"/>
+<link href="style.css?v=37" rel="stylesheet"/>
 <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -45,17 +45,33 @@
 <div class="hero-actions"><a class="button button-primary" href="#work">View my work <span aria-hidden="true">↗</span></a><a class="button button-quiet" href="assets/Aditya_Joshi_Resume.pdf" rel="noopener" target="_blank">Open résumé <span aria-hidden="true">↗</span></a></div>
 </div>
 <div class="hero-visual" data-enter>
-<div class="scene-frame"><canvas aria-label="Animated 3D walkthrough of a student question entering a knowledge graph and becoming a useful product answer" id="hero-scene" role="img"></canvas>
-<div class="scene-fallback flow-fallback" aria-hidden="true"><div class="fallback-rail"></div><div class="fallback-step step-input"><i>?</i><b>QUESTION</b><small>STUDENT QUERY</small></div><div class="fallback-step step-graph"><i>•••</i><b>CONTEXT</b><small>KNOWLEDGE GRAPH</small></div><div class="fallback-step step-output"><i>↗</i><b>PRODUCT</b><small>USEFUL ANSWER</small></div></div>
-<div aria-hidden="true" class="scene-annotations story-annotations"><span class="scene-annotation" data-stage-label="input">01 · ASK</span><span class="scene-annotation" data-stage-label="graph">02 · CONNECT</span><span class="scene-annotation" data-stage-label="output">03 · DELIVER</span></div>
-<div class="scene-grid" aria-hidden="true"></div><div class="scene-label scene-label-top"><span>FIG. 01</span><span>FROM QUESTION TO PRODUCT</span></div>
-<div class="scene-label scene-label-bottom"><span>STUDENT BOT <b>·</b> NEO4J <b>·</b> RECOMMENDER</span><span class="scene-live"><i></i> LIVE MAP</span></div>
-<button class="scene-toggle" id="scene-toggle" type="button" aria-label="Pause 3D animation" aria-pressed="false"><span class="pause-glyph" aria-hidden="true"></span><span>Pause motion</span></button>
+<div class="scene-frame hero-code-scene" aria-label="Animated code sketch showing Aditya's engineering focus" role="img">
+<div class="art-orbit orbit-a" aria-hidden="true"></div><div class="art-orbit orbit-b" aria-hidden="true"></div>
+<div class="orbit-label label-top" aria-hidden="true">CURIOUS BY DEFAULT</div><div class="orbit-label label-bottom" aria-hidden="true">BUILT WITH INTENTION</div>
+<div class="code-window">
+<div class="window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>aditya.ts</span><span class="window-lock" aria-hidden="true">⌘</span></div>
+<div class="code-content" aria-hidden="true">
+<div><span class="line-no">01</span><span class="code-purple">const</span> <span class="code-blue">developer</span> = {</div>
+<div><span class="line-no">02</span>  name: <span class="code-green">'Aditya Joshi'</span>,</div>
+<div><span class="line-no">03</span>  basedIn: <span class="code-green">'Pune, IN'</span>,</div>
+<div><span class="line-no">04</span>  builds: [</div>
+<div><span class="line-no">05</span>    <span class="code-yellow">'Full-stack products'</span>,</div>
+<div><span class="line-no">06</span>    <span class="code-yellow">'Applied AI &amp; data'</span>,</div>
+<div><span class="line-no">07</span>  ],</div>
+<div><span class="line-no">08</span>  goal: <span class="code-green">'make it useful'</span></div>
+<div><span class="line-no">09</span>};<span class="code-cursor"></span></div>
+</div>
+<div class="window-footer"><span><i class="footer-dot"></i> building with intention</span><span>UTF-8 · TypeScript</span></div>
+</div>
+<div class="floating-chip chip-spark"><span aria-hidden="true">✳</span> idea → interface</div><div class="floating-chip chip-ship"><span aria-hidden="true">↗</span> make it useful</div>
+<div class="hero-stamp" aria-hidden="true"><svg viewBox="0 0 100 100"><defs><path id="stamp-path" d="M50,50 m-36,0 a36,36 0 1,1 72,0 a36,36 0 1,1 -72,0"/></defs><text><textPath href="#stamp-path">DESIGN · BUILD · REFINE · REPEAT · </textPath></text></svg><span>AJ</span></div>
+</div>
 </div>
 </div>
 </div>
 <div class="hero-bottom"><span>Scroll to see selected work</span><span class="scroll-cue" aria-hidden="true">↓</span><span>01 / 07 projects</span></div>
 </section>
+<div aria-label="Areas of work: product engineering, applied AI, full-stack development, thoughtful interfaces" class="ticker" role="region"><div class="ticker-track"><div class="ticker-group"><span>PRODUCT ENGINEERING</span><b>✳</b><span>APPLIED AI</span><b>✳</b><span>FULL-STACK DEVELOPMENT</span><b>✳</b><span>THOUGHTFUL INTERFACES</span><b>✳</b></div><div aria-hidden="true" class="ticker-group"><span>PRODUCT ENGINEERING</span><b>✳</b><span>APPLIED AI</span><b>✳</b><span>FULL-STACK DEVELOPMENT</span><b>✳</b><span>THOUGHTFUL INTERFACES</span><b>✳</b></div></div></div>
 <section aria-labelledby="work-title" class="section notebook-section" id="work">
 <div class="section-heading">
 <p class="section-marker handwritten">Field notes · 07 projects</p>
@@ -120,35 +136,36 @@
 </section>
 <section aria-labelledby="experience-title" class="section experience-section" id="experience">
 <div class="section-heading"><p class="section-marker handwritten">Work history · 2024—now</p><div class="section-heading-row"><h2 class="handwritten" id="experience-title">Experience &amp; education.</h2><p class="section-intro">Teams and projects that shaped how I build.</p></div></div><div class="experience-layout"><div class="timeline">
-<article class="timeline-item"><span class="timeline-year">2026—NOW</span><div class="timeline-content"><div class="timeline-heading"><h3>Frontend Associate</h3><span class="timeline-type">Product · Engineering</span></div><p class="timeline-org">Coneixement India</p><p>Managing a STEM quiz platform end to end while developing a WordPress block-theme refresh with Gutenberg, PHP, and theme.json, alongside product releases and SEO improvements.</p></div></article>
-<article class="timeline-item"><span class="timeline-year">2025—26</span><div class="timeline-content"><div class="timeline-heading"><h3>AI/ML Intern</h3><span class="timeline-type">AI · Web apps</span></div><p class="timeline-org">Hilwitz Solutions Pvt. Ltd.</p><p>Integrated AI capabilities into web applications and worked with Python, Flask, and scikit-learn on production-focused solutions.</p></div></article>
-<article class="timeline-item"><span class="timeline-year">2025</span><div class="timeline-content"><div class="timeline-heading"><h3>Intern — GenAI</h3><span class="timeline-type">GenAI · Knowledge graphs</span></div><p class="timeline-org">Maharashtra Knowledge Corporation Ltd.</p><p>Built a Flask and Vue employee directory, then explored multilingual Graph RAG for government scheme queries using Neo4j and a locally hosted LLM.</p></div></article>
-<article class="timeline-item"><span class="timeline-year">2024</span><div class="timeline-content"><div class="timeline-heading"><h3>Backend Development Workshop</h3><span class="timeline-type">Foundations · Full-stack</span></div><p class="timeline-org">Netcamp Solutions Pvt. Ltd.</p><p>Built REST APIs with Flask, designed SQL schemas, and strengthened the fundamentals of collaborative frontend development.</p></div></article>
+<article class="timeline-item"><span class="timeline-year">OCT 2026—NOW</span><div class="timeline-content"><div class="timeline-heading"><h3>Frontend Associate</h3><span class="timeline-type">Product · Engineering</span></div><p class="timeline-org">Coneixement India</p><p>Managing a STEM quiz platform end to end while developing a WordPress block-theme refresh with Gutenberg, PHP, and theme.json, alongside product releases and SEO improvements.</p></div></article>
+<article class="timeline-item"><span class="timeline-year">NOV 2025—APR 2026</span><div class="timeline-content"><div class="timeline-heading"><h3>AI/ML Intern</h3><span class="timeline-type">AI · Web apps</span></div><p class="timeline-org">Hilwitz Solutions Pvt. Ltd.</p><p>Integrated AI capabilities into web applications and worked with Python, Flask, and scikit-learn on production-focused solutions.</p></div></article>
+<article class="timeline-item"><span class="timeline-year">MAR—SEP 2025</span><div class="timeline-content"><div class="timeline-heading"><h3>Intern — GenAI</h3><span class="timeline-type">GenAI · Knowledge graphs</span></div><p class="timeline-org">Maharashtra Knowledge Corporation Ltd.</p><p>Built a Flask and Vue employee directory, then explored multilingual Graph RAG for government scheme queries using Neo4j and a locally hosted LLM.</p></div></article>
+<article class="timeline-item"><span class="timeline-year">JUN—AUG 2024</span><div class="timeline-content"><div class="timeline-heading"><h3>Backend Development Workshop</h3><span class="timeline-type">Foundations · Full-stack</span></div><p class="timeline-org">Netcamp Solutions Pvt. Ltd.</p><p>Built REST APIs with Flask, designed SQL schemas, and strengthened the fundamentals of collaborative frontend development.</p></div></article>
 </div>
 <div class="journey-flight" id="journey-flight">
 <canvas aria-label="Scroll-linked 3D career timeline following Aditya’s current frontend role back through his AI internships and backend workshop." id="journey-scene" role="img"></canvas>
-<div aria-hidden="true" class="journey-stage-labels"><span data-journey-stage="0"><i>2026—NOW</i>FRONTEND · CONEIXEMENT</span><span data-journey-stage="1"><i>2025—26</i>AI/ML · HILWITZ</span><span data-journey-stage="2"><i>2025</i>GENAI · MKCL</span><span data-journey-stage="3"><i>2024</i>BACKEND WORKSHOP</span></div>
+<div aria-hidden="true" class="journey-stage-labels"><span data-journey-stage="0"><i>OCT 2026—NOW</i><b>Frontend Associate</b><small>Coneixement India</small></span><span data-journey-stage="1"><i>NOV 2025—APR 2026</i><b>AI/ML Intern</b><small>Hilwitz Solutions</small></span><span data-journey-stage="2"><i>MAR—SEP 2025</i><b>GenAI Intern</b><small>MKCL</small></span><span data-journey-stage="3"><i>JUN—AUG 2024</i><b>Backend Workshop</b><small>Netcamp Solutions</small></span></div>
 <div class="journey-caption" aria-hidden="true"><span>SCROLL TO TRACE THE CAREER</span><span>ROLE BY ROLE <b>·</b> 2024—2026</span></div>
 <div class="journey-fallback" aria-hidden="true"><i>FRONTEND</i><b>→</b><i>AI/ML</i><b>→</b><i>GENAI</i><b>→</b><i>BACKEND</i></div>
 </div>
 </div>
 <div class="education-card"><span aria-hidden="true" class="education-mark handwritten">✳</span><div><span class="section-marker">The foundation</span><h3>BE Computer Engineering <span>· Honours in Data Science &amp; ML</span></h3><p>Savitribai Phule Pune University <span>·</span> 2022—2026 <span>·</span> CGPA 7.9 / 10</p></div></div>
 </section>
-<section aria-labelledby="skills-title" class="section skills-section" id="skills">
-<div class="section-heading"><p class="section-marker handwritten">Technical toolkit</p><div class="section-heading-row"><h2 class="handwritten" id="skills-title">Tools I use.</h2><p class="section-intro">Languages, frameworks, and tools used to turn ideas into working software.</p></div></div>
-<div class="skill-grid">
-<article class="skill-group"><span class="skill-number">01</span><div><h3>Languages</h3><p>Python · C++ · Java · SQL · JavaScript · Kotlin · PHP</p></div></article>
-<article class="skill-group"><span class="skill-number">02</span><div><h3>Frontend &amp; UI</h3><p>HTML · CSS · HTML templates · React · TypeScript · Vue.js · Vue Router · Pinia · Axios · Tailwind CSS · Vite · Recharts · React Router · Web Speech API</p></div></article>
-<article class="skill-group"><span class="skill-number">03</span><div><h3>WordPress &amp; CMS</h3><p>WordPress · Gutenberg · Block themes · Site Editor · theme.json · PHP theme functions · Search &amp; Query Loop blocks</p></div></article>
-<article class="skill-group"><span class="skill-number">04</span><div><h3>Backend &amp; APIs</h3><p>.NET · Flask · Flask-CORS · Flask-JWT-Extended · FastAPI · SQLAlchemy · Alembic · REST APIs · JWT · Authentication · Third-Party API Integration</p></div></article>
-<article class="skill-group"><span class="skill-number">05</span><div><h3>Databases</h3><p>Microsoft SQL Server · MySQL · PostgreSQL · Neo4j</p></div></article>
-<article class="skill-group"><span class="skill-number">06</span><div><h3>AI &amp; Data</h3><p>LangChain · Scikit-Learn · Pandas · statsmodels · Anthropic API · Retrieval-Augmented Generation (RAG) · Knowledge Graphs</p></div></article>
-<article class="skill-group"><span class="skill-number">07</span><div><h3>Tools, testing &amp; quality</h3><p>Docker · Postman · pytest · Gunicorn · Technical SEO</p></div></article>
-<article class="skill-group"><span class="skill-number">08</span><div><h3>Deployment &amp; infrastructure</h3><p>Render · Oracle Cloud</p></div></article>
-<article class="skill-group"><span class="skill-number">09</span><div><h3>Browser graphics &amp; interaction</h3><p>Canvas 2D · Three.js · WebGL · Manifest V3 · localStorage</p></div></article>
+<section aria-labelledby="skills-title" class="toolkit-section" id="skills">
+<div class="toolkit-inner">
+<div class="toolkit-heading"><p class="section-marker handwritten">Tools I reach for</p><h2 class="handwritten" id="skills-title">Curiosity,<br/><span>with a toolkit.</span></h2><p>A map of the languages, frameworks, and tools I use to turn ideas into working software.</p></div>
+<div class="toolkit-groups">
+<article class="toolkit-group"><span class="toolkit-number">01</span><div><h3>Languages</h3><p>Python · C++ · Java · SQL · JavaScript · Kotlin · PHP</p></div><span class="toolkit-symbol" aria-hidden="true">⌘</span></article>
+<article class="toolkit-group"><span class="toolkit-number">02</span><div><h3>Frontend &amp; UI</h3><p>HTML · CSS · HTML templates · React · TypeScript · Vue.js · Vue Router · Pinia · Axios · Tailwind CSS · Vite · Recharts · React Router · Web Speech API</p></div><span class="toolkit-symbol" aria-hidden="true">◫</span></article>
+<article class="toolkit-group"><span class="toolkit-number">03</span><div><h3>WordPress &amp; CMS</h3><p>WordPress · Gutenberg · Block themes · Site Editor · theme.json · PHP theme functions · Search &amp; Query Loop blocks</p></div><span class="toolkit-symbol" aria-hidden="true">✳</span></article>
+<article class="toolkit-group"><span class="toolkit-number">04</span><div><h3>Backend &amp; APIs</h3><p>.NET · Flask · Flask-CORS · Flask-JWT-Extended · FastAPI · SQLAlchemy · Alembic · REST APIs · JWT · Authentication · Third-Party API Integration</p></div><span class="toolkit-symbol" aria-hidden="true">⇄</span></article>
+<article class="toolkit-group"><span class="toolkit-number">05</span><div><h3>Databases</h3><p>Microsoft SQL Server · MySQL · PostgreSQL · Neo4j</p></div><span class="toolkit-symbol" aria-hidden="true">▦</span></article>
+<article class="toolkit-group"><span class="toolkit-number">06</span><div><h3>AI &amp; Data</h3><p>LangChain · Scikit-Learn · Pandas · statsmodels · Anthropic API · Retrieval-Augmented Generation (RAG) · Knowledge Graphs</p></div><span class="toolkit-symbol" aria-hidden="true">∿</span></article>
+<article class="toolkit-group"><span class="toolkit-number">07</span><div><h3>Tools, testing &amp; quality</h3><p>Docker · Postman · pytest · Gunicorn · Technical SEO</p></div><span class="toolkit-symbol" aria-hidden="true">⚙</span></article>
+<article class="toolkit-group"><span class="toolkit-number">08</span><div><h3>Deployment &amp; infrastructure</h3><p>Render · Oracle Cloud</p></div><span class="toolkit-symbol" aria-hidden="true">↗</span></article>
+<article class="toolkit-group"><span class="toolkit-number">09</span><div><h3>Browser graphics &amp; interaction</h3><p>Canvas 2D · Three.js · WebGL · Manifest V3 · localStorage</p></div><span class="toolkit-symbol" aria-hidden="true">◉</span></article>
 </div>
-</section>
-<section aria-labelledby="about-title" class="section about-section" id="about">
+</div>
+</section><section aria-labelledby="about-title" class="section about-section" id="about">
 <div class="section-heading"><p class="section-marker handwritten">A little about me</p><div class="section-heading-row"><h2 class="handwritten" id="about-title">About Aditya.</h2><p class="section-intro">Computer engineer in Pune, India.</p></div></div>
 <div class="about-copy"><p>I’m Aditya, a computer engineering student who enjoys working out how things work and making practical software. My projects span full-stack products, applied AI, data, and backend systems.</p><p>I care about thoughtful interfaces, useful tools, and the details that make software feel clear. I learn by building and by working through unfamiliar problems with people who care about their craft.</p></div>
 <div class="about-meta"><div><span>Based in</span><b>Pune, India</b></div><div><span>Education</span><b>BE Computer Engineering<br/>Honours in Data Science &amp; ML</b></div><div><span>Current curiosities</span><b>Product engineering · Graph RAG · Data storytelling</b></div></div>

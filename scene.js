@@ -388,16 +388,16 @@ if (journeyCanvas && journeyFrame) {
     };
 
     // Each station is a dimensional cue for a real step in the experience below.
-    const stationX = [-4.05, -1.35, 1.35, 4.05];
+    const stationX = [-3.3, -1.1, 1.1, 3.3];
     const stationY = [-.14, .18, -.04, .28];
     const stationColors = [lime, aqua, violet, blue];
     stationX.forEach((x, index) => {
       const station = new THREE.Group();
       station.position.set(x, stationY[index], 0);
       rig.add(station);
-      addBox(station, 1.24, .76, .15, 0, 0, 0, panelMaterial);
-      addBox(station, 1.14, .66, .02, 0, 0, .085, screenMaterial);
-      addBox(station, .72, .022, .012, 0, .245, .104, stationColors[index]);
+      addBox(station, 1.55, .92, .15, 0, 0, 0, panelMaterial);
+      addBox(station, 1.43, .82, .02, 0, 0, .085, screenMaterial);
+      addBox(station, .92, .026, .012, 0, .31, .104, stationColors[index]);
 
       if (index === 0) {
         // Current frontend role: responsive pages assembled from clear blocks.
@@ -439,11 +439,11 @@ if (journeyCanvas && journeyFrame) {
       }
     });    // A rising rail and marker follow the newest-to-oldest order of the experience list.
     const points=[
-      new THREE.Vector3(-4.8,-.58,.25),new THREE.Vector3(-4.05,-.55,.32),
-      new THREE.Vector3(-2.7,-.35,.36),new THREE.Vector3(-1.35,-.2,.4),
+      new THREE.Vector3(-4.25,-.58,.25),new THREE.Vector3(-3.3,-.55,.32),
+      new THREE.Vector3(-2.2,-.35,.36),new THREE.Vector3(-1.1,-.2,.4),
       new THREE.Vector3(0,.02,.44),new THREE.Vector3(1.35,.13,.4),
-      new THREE.Vector3(2.7,.3,.36),new THREE.Vector3(4.05,.43,.32),
-      new THREE.Vector3(4.8,.48,.25),
+      new THREE.Vector3(2.2,.3,.36),new THREE.Vector3(3.3,.43,.32),
+      new THREE.Vector3(4.25,.48,.25),
     ];
     const careerPath=new THREE.CatmullRomCurve3(points);
     rig.add(new THREE.Mesh(new THREE.TubeGeometry(careerPath,140,.012,6,false),basic(0x8191a7,.42)));
@@ -515,14 +515,14 @@ if (journeyCanvas && journeyFrame) {
       viewportWidth=Math.max(1,rect.width);
       viewportHeight=Math.max(1,rect.height);
       const small=viewportWidth<600;
-      const worldWidth=small?6.25:10.1;
+      const worldWidth=8.6;
       const aspect=viewportWidth/viewportHeight;
       camera.left=-worldWidth/2;
       camera.right=worldWidth/2;
       camera.top=worldWidth/aspect/2;
       camera.bottom=-camera.top;
       camera.updateProjectionMatrix();
-      rig.scale.setScalar(small ? .62 : 1);
+      rig.scale.setScalar(1);
       renderer.setSize(viewportWidth,viewportHeight,false);
       placeMarker(reduce ? .5 : progress);
       renderer.render(scene,camera);
