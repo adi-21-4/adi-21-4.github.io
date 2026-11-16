@@ -187,11 +187,20 @@
   if (tickerTrack && tickerGroup) {
     const sizeTickerCycle = () => {
       const width = tickerGroup.getBoundingClientRect().width;
-      if (width > 0) tickerTrack.style.setProperty('--ticker-distance', `${width}px`);
+      if (width <= 0) return;
+      tickerTrack.style.setProperty('--ticker-distance', `${width}px`);
+      const viewportWidth = tickerTrack.parentElement?.clientWidth || innerWidth;
+      while (tickerTrack.scrollWidth < viewportWidth + width) {
+        const copy = tickerGroup.cloneNode(true);
+        copy.setAttribute('aria-hidden', 'true');
+        copy.dataset.tickerClone = 'true';
+        tickerTrack.append(copy);
+      }
     };
     sizeTickerCycle();
     const tickerObserver = new ResizeObserver(sizeTickerCycle);
     tickerObserver.observe(tickerGroup);
+    if (tickerTrack.parentElement) tickerObserver.observe(tickerTrack.parentElement);
     document.fonts?.ready?.then(sizeTickerCycle);
   }
 
