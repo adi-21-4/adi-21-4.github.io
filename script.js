@@ -9,6 +9,8 @@
   const filters = [...document.querySelectorAll('[data-filter]')];
   const projects = [...document.querySelectorAll('.project-card')];
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const iosWebKit = /iPhone|iPad|iPod/i.test(navigator.userAgent)
+    || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   let activeCategory = 'all';
   let themeAnimating = false;
 
@@ -28,10 +30,7 @@
     const bounds = themeToggle.getBoundingClientRect();
     const originX = bounds.left + bounds.width / 2;
     const originY = bounds.top + bounds.height / 2;
-    if (reduceMotion.matches) {
-      applyTheme(nextTheme);
-      return;
-    }
+    const reducedMotion = reduceMotion.matches;
 
     themeAnimating = true;
     const oldTheme = root.dataset.theme;
@@ -93,13 +92,22 @@
     const edge = document.createElementNS(svgNS, 'path');
     edge.classList.add('theme-wipe-edge');
     wipe.append(defs, edgeGlow, edge);
-    oldLayer.style.mask = `url(#${maskId})`;
-    oldLayer.style.webkitMask = `url(#${maskId})`;
+    if (iosWebKit) {
+      oldLayer.style.mask = 'none';
+      oldLayer.style.webkitMask = 'none';
+      oldLayer.style.webkitMaskRepeat = 'no-repeat';
+      oldLayer.style.webkitMaskSize = '100% 100%';
+      oldLayer.style.maskRepeat = 'no-repeat';
+      oldLayer.style.maskSize = '100% 100%';
+    } else {
+      oldLayer.style.mask = `url(#${maskId})`;
+      oldLayer.style.webkitMask = `url(#${maskId})`;
+    }
     document.body.append(oldLayer, wipe);
     applyTheme(nextTheme);
 
-    const duration = 3800;
-    const arms = [
+    const duration = reducedMotion ? 1000 : 3800;
+    const arms = reducedMotion ? [] : [
       { angle: 2.48, width: .075, reach: .2, phase: .3 },
       { angle: 2.92, width: .052, reach: .17, phase: 1.7 },
       { angle: 1.72, width: .061, reach: .15, phase: 2.8 },
@@ -129,8 +137,10 @@
       wipe.setAttribute('viewBox', `0 0 ${width} ${height}`);
       wipe.setAttribute('width', String(width));
       wipe.setAttribute('height', String(height));
-      maskBackground.setAttribute('width', String(width));
-      maskBackground.setAttribute('height', String(height));
+      if (!iosWebKit) {
+        maskBackground.setAttribute('width', String(width));
+        maskBackground.setAttribute('height', String(height));
+      }
       oldPage.style.transform = `translateY(-${scrollY}px)`;
       const t = Math.min(1, (now - start) / duration);
       const progress = t * t * (3 - 2 * t);
@@ -144,14 +154,25 @@
           const delta = Math.atan2(Math.sin(angle - driftingAngle), Math.cos(angle - driftingAngle));
           tendril += arm.reach * Math.exp(-((delta / arm.width) ** 2));
         });
-        const ripple = .045 * Math.sin(angle * 7 + t * 5.2) + .027 * Math.sin(angle * 13 - t * 4.4 + .8) + .012 * Math.sin(angle * 23 + t * 2.3);
-        const radius = Math.max(0, reach * (1 + ripple + tendril));
+        const ripple = reducedMotion
+          ? .008 * Math.sin(angle * 5 + t * 3)
+          : .045 * Math.sin(angle * 7 + t * 5.2) + .027 * Math.sin(angle * 13 - t * 4.4 + .8) + .012 * Math.sin(angle * 23 + t * 2.3);
+        const radius = iosWebKit
+          ? Math.max(0, reach * (1 + .018 * Math.sin(angle * 5 + t * 4)))
+          : Math.max(0, reach * (1 + ripple + tendril));
         points.push([originX + Math.cos(angle) * radius, originY + Math.sin(angle) * radius]);
       }
       const d = smoothPath(points);
       reveal.setAttribute('d', d);
       edgeGlow.setAttribute('d', d);
       edge.setAttribute('d', d);
+      if (iosWebKit) {
+        const feather = 10;
+        const opaqueEdge = Math.max(0, reach - feather);
+        const maskImage = `radial-gradient(circle at ${originX}px ${originY}px, transparent 0, transparent ${opaqueEdge}px, #000 ${reach}px)`;
+        oldLayer.style.webkitMaskImage = maskImage;
+        oldLayer.style.maskImage = maskImage;
+      }
       if (t < 1) requestAnimationFrame(crawl);
       else {
         oldLayer.remove();
