@@ -9,10 +9,6 @@
   const filters = [...document.querySelectorAll('[data-filter]')];
   const projects = [...document.querySelectorAll('.project-card')];
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
-  const iosWebKit = /iPhone|iPad|iPod/i.test(navigator.userAgent)
-    || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  const iosClipPathSupported = iosWebKit
-    && CSS.supports('clip-path', 'path(evenodd, "M0 0H1V1H0Z")');
   let activeCategory = 'all';
   let themeAnimating = false;
 
@@ -32,6 +28,15 @@
     const bounds = themeToggle.getBoundingClientRect();
     const originX = bounds.left + bounds.width / 2;
     const originY = bounds.top + bounds.height / 2;
+    // Keep the old-theme snapshot anchored to the exact viewport captured at click.
+    // Re-reading scrollY during the long wipe can make it drift against the live page
+    // when mobile browser chrome or scroll anchoring adjusts the viewport.
+    const pageScrollX = window.scrollX;
+    const pageScrollY = window.scrollY;
+    const previousScrollBehavior = root.style.scrollBehavior;
+    const previousOverflowAnchor = root.style.overflowAnchor;
+    root.style.scrollBehavior = 'auto';
+    root.style.overflowAnchor = 'none';
     const reducedMotion = reduceMotion.matches;
 
     themeAnimating = true;
@@ -53,16 +58,17 @@
       .filter(Boolean).flatMap((node) => [node, ...node.querySelectorAll('*')]);
     const clonedNodes = [oldMain, oldFooter].filter(Boolean)
       .flatMap((node) => [node, ...node.querySelectorAll('*')]);
-    const themeProperties = [
-      'color', 'background-color', 'background-image', 'border-top-color', 'border-right-color',
-      'border-bottom-color', 'border-left-color', 'box-shadow', 'text-shadow', 'outline-color',
-      'fill', 'stroke', 'opacity', 'visibility',
-    ];
     clonedNodes.forEach((clone, index) => {
       const original = originalNodes[index];
       if (!original) return;
       const computed = getComputedStyle(original);
-      themeProperties.forEach((property) => clone.style.setProperty(property, computed.getPropertyValue(property)));
+      // The snapshot lives in a different containing block than the source page.
+      // Freeze its full computed style so flex/grid sizing, fonts, and margins remain
+      // identical while the live document changes theme underneath it.
+      for (let propertyIndex = 0; propertyIndex < computed.length; propertyIndex += 1) {
+        const property = computed.item(propertyIndex);
+        clone.style.setProperty(property, computed.getPropertyValue(property));
+      }
       clone.style.setProperty('transition', 'none', 'important');
       clone.style.setProperty('animation', 'none', 'important');
     });
@@ -94,19 +100,15 @@
     const edge = document.createElementNS(svgNS, 'path');
     edge.classList.add('theme-wipe-edge');
     wipe.append(defs, edgeGlow, edge);
-    if (iosWebKit) {
-      oldLayer.style.mask = 'none';
-      oldLayer.style.webkitMask = 'none';
-      oldLayer.style.webkitMaskRepeat = 'no-repeat';
-      oldLayer.style.webkitMaskSize = '100% 100%';
-      oldLayer.style.maskRepeat = 'no-repeat';
-      oldLayer.style.maskSize = '100% 100%';
-    } else {
-      oldLayer.style.mask = `url(#${maskId})`;
-      oldLayer.style.webkitMask = `url(#${maskId})`;
-    }
+    oldLayer.style.mask = `url(#${maskId})`;
+    oldLayer.style.webkitMask = `url(#${maskId})`;
     document.body.append(oldLayer, wipe);
     applyTheme(nextTheme);
+    // Theme and color-scheme changes can trigger scroll anchoring in some browsers.
+    // Keep the document at the same position while the old-theme layer is visible.
+    if (window.scrollX !== pageScrollX || window.scrollY !== pageScrollY) {
+      window.scrollTo(pageScrollX, pageScrollY);
+    }
 
     const duration = reducedMotion ? 1000 : 3800;
     const arms = reducedMotion ? [] : [
@@ -139,11 +141,9 @@
       wipe.setAttribute('viewBox', `0 0 ${width} ${height}`);
       wipe.setAttribute('width', String(width));
       wipe.setAttribute('height', String(height));
-      if (!iosWebKit) {
-        maskBackground.setAttribute('width', String(width));
-        maskBackground.setAttribute('height', String(height));
-      }
-      oldPage.style.transform = `translateY(-${scrollY}px)`;
+      maskBackground.setAttribute('width', String(width));
+      maskBackground.setAttribute('height', String(height));
+      oldPage.style.transform = `translate(${-pageScrollX}px, ${-pageScrollY}px)`;
       const t = Math.min(1, (now - start) / duration);
       const progress = t * t * (3 - 2 * t);
       const reach = Math.hypot(Math.max(originX, width - originX), Math.max(originY, height - originY)) * 1.22 * progress;
@@ -159,33 +159,19 @@
         const ripple = reducedMotion
           ? .008 * Math.sin(angle * 5 + t * 3)
           : .045 * Math.sin(angle * 7 + t * 5.2) + .027 * Math.sin(angle * 13 - t * 4.4 + .8) + .012 * Math.sin(angle * 23 + t * 2.3);
-        const radius = iosWebKit && !iosClipPathSupported
-          ? Math.max(0, reach * (1 + .018 * Math.sin(angle * 5 + t * 4)))
-          : Math.max(0, reach * (1 + ripple + tendril));
+        const radius = Math.max(0, reach * (1 + ripple + tendril));
         points.push([originX + Math.cos(angle) * radius, originY + Math.sin(angle) * radius]);
       }
       const d = smoothPath(points);
       reveal.setAttribute('d', d);
       edgeGlow.setAttribute('d', d);
       edge.setAttribute('d', d);
-      if (iosWebKit) {
-        if (iosClipPathSupported) {
-          const outerPath = `M 0 0 H ${width} V ${height} H 0 Z`;
-          const clipPath = `path(evenodd, "${outerPath} ${d}")`;
-          oldLayer.style.webkitClipPath = clipPath;
-          oldLayer.style.clipPath = clipPath;
-        } else {
-          const feather = 10;
-          const opaqueEdge = Math.max(0, reach - feather);
-          const maskImage = `radial-gradient(circle at ${originX}px ${originY}px, transparent 0, transparent ${opaqueEdge}px, #000 ${reach}px)`;
-          oldLayer.style.webkitMaskImage = maskImage;
-          oldLayer.style.maskImage = maskImage;
-        }
-      }
       if (t < 1) requestAnimationFrame(crawl);
       else {
         oldLayer.remove();
         wipe.remove();
+        root.style.scrollBehavior = previousScrollBehavior;
+        root.style.overflowAnchor = previousOverflowAnchor;
         themeAnimating = false;
       }
     };
