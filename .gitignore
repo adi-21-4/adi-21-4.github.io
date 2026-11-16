@@ -1,0 +1,13 @@
+# Local browser profiles and visual review exports
+/chrome-*/
+/hero-motion-*.png
+/portfolio-final.png
+/projects-final.png
+
+# Local design tools, skill sources, and unused comp assets
+/.impeccable/
+/.taste-skill/
+/skills-main/
+/motion-skills-master/
+/assets/comp-layout.css
+/assets/plates/
